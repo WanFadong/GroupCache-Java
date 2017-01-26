@@ -33,7 +33,7 @@
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
         <!--建立一个只向控制台输出的logger-->
-        <logger name = "console" level = "trace" addActivity = "false">
+        <logger name = "console" level = "trace">
             <appender-ref ref="Console.Trace" />
         </logger>
 
