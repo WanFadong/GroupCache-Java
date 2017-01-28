@@ -1,6 +1,7 @@
 package com.somewan.cache.ConsistentHash;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,6 +65,10 @@ public class ConsistentHash {
             }
 
             for (String peer : peers) {
+                if(StringUtils.isBlank(peer)) {
+                    LOG.warn("peer为空，该节点已抛弃");
+                    continue;
+                }
                 for (int i = 0; i < replicas; i++) {
                     String peerKey = peer + "_" + i;
                     long hash = hashFunc.hash(peerKey);
