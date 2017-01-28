@@ -22,6 +22,7 @@ public class Peer {
 
     /**
      * 从peer节点获取key对应的数据。
+     * 暂时不支持key对应的数据为null的情况。返回null表示出错。
      * @param key
      * @return
      */
