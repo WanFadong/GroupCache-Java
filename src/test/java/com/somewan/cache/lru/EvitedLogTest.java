@@ -1,4 +1,4 @@
-package com.somewan.cache;
+package com.somewan.cache.lru;
 
 import com.somewan.cache.lru.EvictedLog;
 import junit.framework.TestCase;

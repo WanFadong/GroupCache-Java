@@ -3,7 +3,6 @@ package com.somewan.cache.ConsistentHash;
 import com.alibaba.fastjson.JSON;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.*;
 
@@ -28,7 +27,7 @@ public class ConsistentHash {
 
     public ConsistentHash(HashFunc hashFunc, int replicas) {
         if(hashFunc == null) {
-            hashFunc = new Fnv1Hash();
+            hashFunc = new Fnv1Hash();// 默认使用FNV1哈希算法。
         }
         this.hashFunc = hashFunc;
         if(replicas <= 0) {
@@ -38,7 +37,7 @@ public class ConsistentHash {
     }
 
     public boolean isEmpty() {
-        if(hashList == null || hashList.size() == 0) {
+        if(peerHashSet == null || peerHashSet.size() == 0) {
             return true;
         }
         return false;
@@ -47,6 +46,7 @@ public class ConsistentHash {
     /**
      * 初始化节点。
      * 节点不能重复。重复的不再次添加，只会打印warn日志。
+     * !! 节点数量可以变动（增加）
      * @return 表示成功/失败。
      */
     public boolean setPeers(String[] peers) {
@@ -58,7 +58,7 @@ public class ConsistentHash {
             }
             if (isEmpty()) {
                 int num = peers.length;
-                hashList = new ArrayList<Long>(num);
+                peerHashSet = new TreeSet<Long>();
                 int cap = (int) (num / 0.75) + 1;
                 hashPeerMap = new HashMap<Long, String>(cap);
             }
@@ -122,7 +122,7 @@ public class ConsistentHash {
             return peer;
         } catch (Exception e) {
             LOG.error("查询key对应节点失败",e);
-            return fasle;
+            return null;
         }
     }
 }
