@@ -28,4 +28,17 @@ public class Result {
     public static Result errorResult() {
         return new Result(ResultCode.ERROR, null);
     }
+
+    public boolean isSuccess() {
+        return code == ResultCode.SUCCESS;
+    }
+
+    public void copy(Result result) {
+        code = result.code;
+        value = result.value;
+    }
+
+    public Object getValue() {
+        return this.value;
+    }
 }

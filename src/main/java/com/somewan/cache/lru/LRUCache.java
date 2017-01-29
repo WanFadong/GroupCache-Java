@@ -103,9 +103,6 @@ public class LRUCache {
             LOG.warn("缓存中key不允许为null，写入缓存失败");
             return false;//TODO 返回异常，以及异常代码。
         }
-        if(value == null) {
-            LOG.warn("缓存中value不允许为null，缓存设置失败");
-        }
         mapLock.writeLock().lock();
         try {
             // map中写入数据

@@ -11,12 +11,10 @@ import org.apache.logging.log4j.Logger;
 public class ConsistentHashPeerPicker implements PeerPicker {
     private static final Logger LOG = LogManager.getLogger(ConsistentHashPeerPicker.class);
     private ConsistentHash consistentHash = new ConsistentHash();
-    private String cacheName;
-    private String clusterName;
-
 
     /**
      * 选择key所在的节点。
+     * 返回null表示失败：集群尚未初始化；选择的节点是自己。
      * @param key
      * @return
      */
@@ -39,16 +37,7 @@ public class ConsistentHashPeerPicker implements PeerPicker {
      * @param peers
      * @return
      */
-    public boolean initPeers(String[] peers, String cacheName, String clusterName) {
-        LOG.info("正在初始化集群。cacheName={} clusterName={}", cacheName, clusterName);
-        if(cacheName == null) {
-            return false;
-        }
-        if(clusterName == null) {
-            return false;
-        }
-        this.cacheName = cacheName;
-        this.clusterName = clusterName;
+    public boolean initPeers(String[] peers) {
         return consistentHash.setPeers(peers);
     }
 }

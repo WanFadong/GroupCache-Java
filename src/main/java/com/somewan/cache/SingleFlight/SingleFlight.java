@@ -16,6 +16,13 @@ public class SingleFlight {
     private Lock mapLock = new ReentrantLock();
     private Map<String, Result> keyResultMap = new HashMap<String, Result>();
 
+    /**
+     *
+     * 注：这里的返回值都指向一个地方，有点危险。如果被修改了，其他地方都会修改。
+     * @param singleLoader
+     * @param key
+     * @return
+     */
     public Result singleDo(SingleLoader singleLoader, String key) {
         try {
             if (key == null) {

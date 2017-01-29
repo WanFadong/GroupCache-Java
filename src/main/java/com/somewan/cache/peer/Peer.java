@@ -1,5 +1,7 @@
 package com.somewan.cache.peer;
 
+import com.somewan.cache.Result;
+
 /**
  * Created by wan on 2017/1/28.
  */
@@ -27,7 +29,7 @@ public class Peer {
      * @return
      */
     // TODO
-    public Object get(String key) {
+    public Result get(String key) {
         return null;
     }
 }
