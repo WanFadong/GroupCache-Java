@@ -1,4 +1,4 @@
-package com.somewan.cache;
+package com.somewan.cache.result;
 
 /**
  * Created by wan on 2017/1/29.
@@ -45,5 +45,9 @@ public class Result {
 
     public Object getValue() {
         return this.value;
+    }
+
+    public Object getCode() {
+        return this.code;
     }
 }

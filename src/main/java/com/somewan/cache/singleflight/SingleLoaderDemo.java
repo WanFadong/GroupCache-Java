@@ -1,17 +1,16 @@
-package com.somewan.cache.SingleFlight;
+package com.somewan.cache.singleflight;
 
-import com.somewan.cache.Result;
+import com.somewan.cache.result.Result;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用于测试SingleFlight的一个桩
- * Created by wan on 2017/1/28.
+ * Created by wan on 2017/1/30.
  */
-public class CacheLoader implements SingleLoader {
+public class SingleLoaderDemo implements SingleLoader {
     @Override
-    public Result singleLoad(String key) {
+    public void singleLoad(String key, Result resultRtn) {
         Map<String, Object> cacheData = new HashMap<String, Object>();
         cacheData.put("name", "wanfadong");
         cacheData.put("age", "25");
@@ -22,6 +21,6 @@ public class CacheLoader implements SingleLoader {
             e.printStackTrace();
         }
         Object value = cacheData.get(key);
-        return Result.successResult(value);
+        resultRtn.copy(Result.successResult(value));
     }
 }

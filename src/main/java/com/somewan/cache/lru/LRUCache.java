@@ -1,7 +1,7 @@
 package com.somewan.cache.lru;
 
 import com.alibaba.fastjson.JSON;
-import com.somewan.cache.Result;
+import com.somewan.cache.result.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +57,8 @@ public class LRUCache {
         int capacity = (int) (this.maxEntry/0.75) + 1;
         cache = new HashMap<String, Object>(capacity);
         long end = System.currentTimeMillis();
-        LOG.info("初始化{}耗时{}ms。maxEntry={}，evict={}",LRUCache.class.getName(), (end-start), maxEntry, JSON.toJSONString(evict));
+//        LOG.info("初始化{}耗时{}ms。maxEntry={}，evict={}",
+//                LRUCache.class.getName(), (end-start), maxEntry, JSON.toJSONString(evict));
     }
 
     /**

@@ -14,7 +14,7 @@ public class ConsistentHashPeerPickerTest extends TestCase {
         ConsistentHashPeerPicker peerPicker = new ConsistentHashPeerPicker();
         assertNull(peerPicker.pickPeer(keys[0]));
 
-        peerPicker.initPeers(peers, "groupCache", "test");
+        peerPicker.initPeers(peers);
         for(String key: keys) {
             assertNotNull(peerPicker.pickPeer(key));
         }

@@ -1,4 +1,4 @@
-package com.somewan.cache.ConsistentHash;
+package com.somewan.cache.consistenthash;
 
 import junit.framework.TestCase;
 

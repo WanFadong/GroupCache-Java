@@ -1,6 +1,6 @@
 package com.somewan.cache.peer;
 
-import com.somewan.cache.Result;
+import com.somewan.cache.result.Result;
 
 /**
  * Created by wan on 2017/1/28.
@@ -25,6 +25,6 @@ public class Peer {
     // TODO
     public Result get(String cacheName, String groupName, String key) {
         String url = host +"/" + cacheName + "/" + groupName;
-        return null;
+        return Result.notFoundResult();
     }
 }

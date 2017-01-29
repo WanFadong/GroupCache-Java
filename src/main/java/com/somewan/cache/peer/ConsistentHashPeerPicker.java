@@ -1,7 +1,7 @@
 package com.somewan.cache.peer;
 
 import com.alibaba.fastjson.JSON;
-import com.somewan.cache.ConsistentHash.ConsistentHash;
+import com.somewan.cache.consistenthash.ConsistentHash;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

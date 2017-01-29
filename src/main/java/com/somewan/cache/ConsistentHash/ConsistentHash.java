@@ -1,4 +1,4 @@
-package com.somewan.cache.ConsistentHash;
+package com.somewan.cache.consistenthash;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;

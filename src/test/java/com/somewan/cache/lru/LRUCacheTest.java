@@ -1,6 +1,7 @@
 package com.somewan.cache.lru;
 
 import com.somewan.cache.lru.LRUCache;
+import com.somewan.cache.result.Result;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
@@ -35,6 +36,6 @@ public class LRUCacheTest extends TestCase{
         assertEquals("NJU", lruCache.get("school"));
 
         //测试不存在的key
-        assertSame(LRUCache.NOT_FOUND, lruCache.get("password"));
+        assertEquals(Result.notFoundResult().getCode(), lruCache.get("password").getCode());
     }
 }

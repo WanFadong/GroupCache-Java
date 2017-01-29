@@ -1,6 +1,6 @@
-package com.somewan.cache.SingleFlight;
+package com.somewan.cache.singleflight;
 
-import com.somewan.cache.Result;
+import com.somewan.cache.result.Result;
 
 /**
  * Created by wan on 2017/1/28.

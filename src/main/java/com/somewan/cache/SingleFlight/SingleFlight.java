@@ -1,6 +1,6 @@
-package com.somewan.cache.SingleFlight;
+package com.somewan.cache.singleflight;
 
-import com.somewan.cache.Result;
+import com.somewan.cache.result.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

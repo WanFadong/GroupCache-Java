@@ -1,4 +1,4 @@
-package com.somewan.cache.SingleFlight;
+package com.somewan.cache.singleflight;
 
 import junit.framework.TestCase;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 public class SingleFlightTest extends TestCase {
 
     public void testSingleDo() throws ExecutionException, InterruptedException {
-        final SingleLoader singleLoader = new CacheLoader();
+        final SingleLoader singleLoader = new SingleLoaderDemo();
         String[] keys = {null, "name", "age", "name", "name"};
         String[] values = {null, "wanfadong", "25", "wanfadong", "wanfadong"};
         ExecutorService service = Executors.newFixedThreadPool(keys.length);

@@ -1,4 +1,4 @@
-package com.somewan.cache.ConsistentHash;
+package com.somewan.cache.consistenthash;
 
 /**
  * Created by wan on 2017/1/26.

@@ -1,4 +1,4 @@
-package com.somewan.cache.ConsistentHash;
+package com.somewan.cache.consistenthash;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

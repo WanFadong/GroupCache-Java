@@ -1,12 +1,11 @@
 package com.somewan.cache;
 
 import com.alibaba.fastjson.JSON;
-import com.somewan.cache.SingleFlight.SingleFlight;
-import com.somewan.cache.SingleFlight.SingleLoader;
+import com.somewan.cache.result.Result;
+import com.somewan.cache.singleflight.SingleFlight;
+import com.somewan.cache.singleflight.SingleLoader;
 import com.somewan.cache.lru.LRUCache;
-import com.somewan.cache.peer.ConsistentHashPeerPicker;
 import com.somewan.cache.peer.Peer;
-import com.somewan.cache.peer.PeerPicker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
