@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class Fnv1HashTest extends TestCase {
 
     public void testHash() {
-        Fnv1Hash hashFunc = new Fnv1Hash();
+        FNV1Hash hashFunc = new FNV1Hash();
         for(int i = 0; i < 10; i++) {
             hashFunc.hash("wanfadong" + i);
         }

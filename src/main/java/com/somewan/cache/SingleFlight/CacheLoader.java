@@ -1,5 +1,7 @@
 package com.somewan.cache.SingleFlight;
 
+import com.somewan.cache.Result;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import java.util.Map;
  */
 public class CacheLoader implements SingleLoader {
     @Override
-    public Object singleLoad(String key) {
+    public Result singleLoad(String key) {
         Map<String, Object> cacheData = new HashMap<String, Object>();
         cacheData.put("name", "wanfadong");
         cacheData.put("age", "25");
@@ -19,6 +21,7 @@ public class CacheLoader implements SingleLoader {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return cacheData.get(key);
+        Object value = cacheData.get(key);
+        return Result.successResult(value);
     }
 }

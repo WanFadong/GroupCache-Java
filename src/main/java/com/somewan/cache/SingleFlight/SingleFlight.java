@@ -1,5 +1,6 @@
 package com.somewan.cache.SingleFlight;
 
+import com.somewan.cache.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +16,7 @@ public class SingleFlight {
     private Lock mapLock = new ReentrantLock();
     private Map<String, Result> keyResultMap = new HashMap<String, Result>();
 
-    public Object singleDo(SingleLoader singleLoader, String key) {
+    public Result singleDo(SingleLoader singleLoader, String key) {
         try {
             if (key == null) {
                 return null;//TODO NULL 以后考虑抛出异常
@@ -39,7 +40,7 @@ public class SingleFlight {
                         LOG.error("获取key={}的缓存失败", key, e);
                     }
                 }
-                return result.value();
+                return result;
             }
 
             Result result;
@@ -52,8 +53,9 @@ public class SingleFlight {
                 mapLock.unlock();
             }
 
-            Object value = singleLoader.singleLoad(key);
-            result.setValue(value);
+            // 这里不能用返回值，必须用函数副作用。
+            // （如果用返回值，还是得把返回的值设置到这个Result中）
+            singleLoader.singleLoad(key, result);
             synchronized (result) {
                 result.notifyAll();
             }
@@ -65,7 +67,7 @@ public class SingleFlight {
             } finally {
                 mapLock.unlock();
             }
-            return result.value();
+            return result;
         } catch (Exception e) {
             LOG.error("获取key={}的缓存失败", key, e);
             return null;//TODO NULL 返回异常

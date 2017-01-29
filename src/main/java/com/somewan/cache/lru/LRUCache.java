@@ -1,6 +1,7 @@
 package com.somewan.cache.lru;
 
 import com.alibaba.fastjson.JSON;
+import com.somewan.cache.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class LRUCache {
     private static final Logger LOG = LogManager.getLogger(LRUCache.class);
-    public static final Object NOT_FOUND = new Object();
+    // public static final Object NOT_FOUND = new Object();
     public static final int DEFAULT_MAX_ENTRY = 10000;
 
     private Deque<String> ruList;// 访问顺序链表：按使用顺序保存map中key，维护淘汰顺序。类似于先进先出。
@@ -29,6 +30,10 @@ public class LRUCache {
     private ReadWriteLock mapLock = new ReentrantReadWriteLock();// map上的锁
     private ReadWriteLock listLock = new ReentrantReadWriteLock();// 链表上的锁
 
+    /**
+     * maxEntry默认为DEFAULT_MAX_ENTRY
+     * evict默认为null
+     */
     public LRUCache() {
         this(null, DEFAULT_MAX_ENTRY);
     }
@@ -57,11 +62,11 @@ public class LRUCache {
 
     /**
      * 获取key对应的value。
-     * 注：返回NOT_FOUND表示没有对应的数据；返回null表示key对应的值是null。
+     * Result.found用于区别到底是value=null还是没有key对应的value。
      * @param key
      * @return
      */
-    public Object get(String key) {
+    public Result get(String key) {
         LOG.info("正在获取缓存中key={}的数据", key);
         //TODO 不要在锁里面打印日志。
         mapLock.readLock().lock();
@@ -69,17 +74,17 @@ public class LRUCache {
             // 查看map
             if (!cache.containsKey(key)) {
                 LOG.info("缓存中不存在key={}的数据", key);
-                return NOT_FOUND;
+                return Result.notFoundResult();
             }
 
             Object obj = cache.get(key);
             // 更新访问顺序链表
             setFreshKey(key);
             LOG.info("获取缓存数据成功（key={}, value={}）", key, JSON.toJSONString(obj));
-            return obj;
-        } catch (Exception e){
+            return Result.successResult(obj);
+        } catch (RuntimeException e){
             LOG.error("读取缓存失败。", e);
-            return NOT_FOUND;
+            return Result.errorResult();
         } finally {
             mapLock.readLock().unlock();
         }
@@ -97,6 +102,9 @@ public class LRUCache {
         if(key == null) {
             LOG.warn("缓存中key不允许为null，写入缓存失败");
             return false;//TODO 返回异常，以及异常代码。
+        }
+        if(value == null) {
+            LOG.warn("缓存中value不允许为null，缓存设置失败");
         }
         mapLock.writeLock().lock();
         try {

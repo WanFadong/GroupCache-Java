@@ -28,7 +28,7 @@ public class ConsistentHash {
 
     public ConsistentHash(HashFunc hashFunc, int replicas) {
         if(hashFunc == null) {
-            hashFunc = new Fnv1Hash();// 默认使用FNV1哈希算法。
+            hashFunc = new FNV1Hash();// 默认使用FNV1哈希算法。
         }
         this.hashFunc = hashFunc;
         if(replicas <= 0) {

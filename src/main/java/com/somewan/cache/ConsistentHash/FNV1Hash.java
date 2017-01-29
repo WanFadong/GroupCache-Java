@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
  * 拷贝自http://www.osbaike.net/article-show-id-7198.html。并做简要修改。
  * Created by wan on 2017/1/26.
  */
-public class Fnv1Hash implements HashFunc {
-    private static final Logger LOG = LogManager.getLogger(Fnv1Hash.class);
+public class FNV1Hash implements HashFunc {
+    private static final Logger LOG = LogManager.getLogger(FNV1Hash.class);
 
     @Override
     public long hash(String data) {
