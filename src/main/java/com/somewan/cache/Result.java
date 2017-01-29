@@ -29,9 +29,14 @@ public class Result {
         return new Result(ResultCode.ERROR, null);
     }
 
+    public static Result localLoadResult() {
+        return new Result(ResultCode.LOCAL_LOAD, null);
+    }
+
     public boolean isSuccess() {
         return code == ResultCode.SUCCESS;
     }
+
 
     public void copy(Result result) {
         code = result.code;

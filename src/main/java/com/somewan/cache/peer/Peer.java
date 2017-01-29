@@ -7,14 +7,8 @@ import com.somewan.cache.Result;
  */
 public class Peer {
     private String host;// peer的host
-    private String basePath;// Peer的host/cacheName/clusterName
 
-    public String getBasePath() {
-        return basePath;
-    }
-
-    public void setBasePath(String host, String cacheName, String clusterName) {
-        this.basePath = host +"/" + cacheName + "/" + clusterName;
+    public Peer(String host) {
         this.host = host;
     }
 
@@ -29,7 +23,8 @@ public class Peer {
      * @return
      */
     // TODO
-    public Result get(String key) {
+    public Result get(String cacheName, String groupName, String key) {
+        String url = host +"/" + cacheName + "/" + groupName;
         return null;
     }
 }

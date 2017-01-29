@@ -1,5 +1,6 @@
 package com.somewan.cache;
 
+import com.alibaba.fastjson.JSON;
 import com.somewan.cache.SingleFlight.SingleFlight;
 import com.somewan.cache.SingleFlight.SingleLoader;
 import com.somewan.cache.lru.LRUCache;
@@ -17,38 +18,26 @@ public class Group implements SingleLoader{
     private static final Logger LOG = LogManager.getLogger(Group.class);
 
     private String groupName;// 命名空间名称
-    private String host;// 缓存实例运行在的host
 
     private LRUCache mainCache;
     private LRUCache hotCache;
+    private SingleFlight single;// 用于请求归并
     private GroupCache groupCache;// 用于提供sigle, picker, getter。
 
+//    private String host;// 缓存实例运行在的host
 //    private String cacheName;// 整个缓存的名称
-//    private SingleFlight single;// 用于请求归并
 //    private PeerPicker picker;// 需要用户提供节点配置，完成初始化
 //    private LocalGetter getter;// 需要用于提供getter实现类。
 
     //TODO 数据内存控制，现在默认使用maxEntry = 10000;
 
-    public Group(GroupCache groupCache) {
+    public Group(GroupCache groupCache, String groupName) {
+        this.groupName = groupName;
         mainCache = new LRUCache();
         hotCache = new LRUCache();
         single = new SingleFlight();
+        this.groupCache = groupCache;
     }
-
-    public void setCacheName(String cacheName) {
-        this.cacheName = cacheName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public void
 
     /**
      * 从缓存中获取key对应的数据。
@@ -56,7 +45,7 @@ public class Group implements SingleLoader{
      * @param key
      * @return
      */
-    public Result get(String key, PeerPicker picker, LocalGetter getter) {
+    public Result get(String key) {
         LOG.info("正在获取key=({})对应的数据。", key);
         // 先检查本地缓存；
         Result result = lookupCache(key);
@@ -67,7 +56,7 @@ public class Group implements SingleLoader{
         // 本地缓存不存在，开始加载过程
         LOG.info("本地缓存中不存在key={}", key);
         result = single.singleDo(this, key);
-
+        return result;
     }
 
 
@@ -84,6 +73,7 @@ public class Group implements SingleLoader{
         Result result = lookupCache(key);
         if(result.isSuccess()) {
             resultRtn.copy(result);
+            LOG.info("加载数据成功，result={}", JSON.toJSONString(resultRtn));
             return;
         }
 
@@ -92,10 +82,14 @@ public class Group implements SingleLoader{
         result = getFromPeer(key);
         if(result.isSuccess()) {
             resultRtn.copy(result);
+            LOG.info("加载数据成功，result={}", JSON.toJSONString(resultRtn));
             return;
         }
 
         // 从本地获取数据
+        result = getLocally(key);
+        resultRtn.copy(result);
+        LOG.info("加载数据成功，result={}", JSON.toJSONString(resultRtn));
     }
 
     private Result lookupCache(String key) {
@@ -113,18 +107,36 @@ public class Group implements SingleLoader{
      * @return
      */
     private Result getFromPeer(String key) {
-        Peer peer = picker.pickPeer(key);
-        Result result = peer.get(key);
+        Peer peer = groupCache.getPicker().pickPeer(key);
+        if(peer.getHost().equals(groupCache.getHost())) {
+            //获取到的节点是本机。
+            LOG.info("应该从本节点加载数据，peer=({}), key=({})", peer.getHost(), key);
+            return Result.localLoadResult();
+        }
+        Result result = peer.get(groupCache.getCacheName(), groupName, key);
         if(result.isSuccess()) {
             // 设置hotCache数据
             setHotCache(key, result);
         }
-        LOG.info("从节点{}获取key={}对应的数据，Result={}", peer.getBasePath(), key, result);
+        LOG.info("从peer=({})获取namespace=({}) key=({})对应的数据，Result={}",
+                peer.getHost(), groupName, key, JSON.toJSONString(result));
         return result;
     }
 
-    private Object getLocally(String key) {
+    private Result getLocally( String key) {
+        // 本地读取
+        String cacheName = groupCache.getCacheName();
+        String namespace = groupName;
+        Result result = groupCache.getGetter().get(cacheName, namespace, key);
 
+        // 加载入mainCache
+        boolean set = false;
+        if(result.isSuccess()) {
+            set = mainCache.add(key, result.getValue());
+        }
+        LOG.info("从本地加载cacheName=({}),namespace=({}),key=({}),result={}。缓存设置结果=({})",
+                cacheName, namespace, key, JSON.toJSONString(result), set);
+        return result;
     }
 
     /**

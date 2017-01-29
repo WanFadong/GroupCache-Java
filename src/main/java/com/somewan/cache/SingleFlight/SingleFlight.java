@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.locks.*;
 
 /**
+ * 一个group对应一个single。因为single中只记录key，不记录namespace。
  * Created by wan on 2017/1/28.
  */
 public class SingleFlight {

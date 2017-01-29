@@ -6,5 +6,6 @@ package com.somewan.cache;
 public enum ResultCode {
     SUCCESS,
     NOT_FOUND,// 没有找到对应数据
+    LOCAL_LOAD,// 数据应该在本节点加载
     ERROR// 处理过程中出现异常
 }

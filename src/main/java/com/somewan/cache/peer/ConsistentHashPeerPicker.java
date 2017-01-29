@@ -26,8 +26,7 @@ public class ConsistentHashPeerPicker implements PeerPicker {
         }
 
         String peerHost = consistentHash.getPeer(key);
-        Peer peer = new Peer();
-        peer.setBasePath(peerHost, cacheName, clusterName);
+        Peer peer = new Peer(peerHost);
         LOG.info("获取节点成功：key={} peer={}", key, JSON.toJSONString(peer));
         return peer;
     }
