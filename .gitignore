@@ -18,3 +18,6 @@ log/
 src/.DS_Store
 src/main/.DS_Store
 groupcache.iml
+out/
+src/main/main.iml
+src/test/test.iml

@@ -6,6 +6,7 @@ import com.somewan.cache.result.ResultCode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,22 +42,16 @@ public class HttpUtils {
             }
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            String line = null;
-            String retStr = null;
             // 正常返回响应的body只有一行。
-            while((line = reader.readLine()) != null) {
-                if(line.compareTo("") == 0) {
-                    retStr = reader.readLine();
-                    break;
-                }
-            }
+            String retStr = reader.readLine();
 
             if(retStr == null) {
                 return Result.errorResult(ResultCode.NET_ERROR);
             }
 
-            LOG.info("请求成功，url=({})，retStr={}", urlStr, retStr);
-            return JSON.parseObject(retStr, Result.class);
+            Result result = JSON.parseObject(retStr, Result.class);
+            LOG.info("请求成功，url=({})，result={}", urlStr, JSON.toJSONString(result));
+            return result;
         } catch (MalformedURLException e) {
             LOG.error("请求失败，url=({})", e);
             return Result.errorResult(ResultCode.BAD_REQUEST);
