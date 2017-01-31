@@ -17,6 +17,22 @@ public class Result {
         this.value = value;
     }
 
+    public Object getValue() {
+        return this.value;
+    }
+
+    public Object getCode() {
+        return this.code;
+    }
+
+    public void setCode(ResultCode code) {
+        this.code = code;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
     public static Result successResult(Object value) {
         return new Result(ResultCode.SUCCESS, value);
     }
@@ -25,12 +41,25 @@ public class Result {
         return new Result(ResultCode.NOT_FOUND, null);
     }
 
-    public static Result errorResult() {
-        return new Result(ResultCode.ERROR, null);
+    public static Result serverErrorResult() {
+        return new Result(ResultCode.SERVER_ERROR, null);
     }
 
     public static Result localLoadResult() {
         return new Result(ResultCode.LOCAL_LOAD, null);
+    }
+
+    /**
+     * erroCode != success
+     * @param errorCode
+     * @return
+     */
+    public static Result errorResult(ResultCode errorCode) {
+        return new Result(errorCode, null);
+    }
+
+    public static Result badRequestResult() {
+        return new Result(ResultCode.BAD_REQUEST, null);
     }
 
     public boolean isSuccess() {
@@ -43,11 +72,4 @@ public class Result {
         value = result.value;
     }
 
-    public Object getValue() {
-        return this.value;
-    }
-
-    public Object getCode() {
-        return this.code;
-    }
 }

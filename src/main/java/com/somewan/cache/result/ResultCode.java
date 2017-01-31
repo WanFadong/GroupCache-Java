@@ -7,5 +7,7 @@ public enum ResultCode {
     SUCCESS,
     NOT_FOUND,// 没有找到对应数据
     LOCAL_LOAD,// 数据应该在本节点加载
-    ERROR// 处理过程中出现异常
+    BAD_REQUEST,// 用户不合法的请求
+    SERVER_ERROR,// 服务器处理过程中出现异常
+    NET_ERROR// 集群间访问网络错误
 }

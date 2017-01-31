@@ -30,7 +30,7 @@ public class Group implements SingleLoader{
 
     //TODO 数据内存控制，现在默认使用maxEntry = 10000;
 
-    public Group(GroupCache groupCache, String groupName) {
+    protected Group(GroupCache groupCache, String groupName) {
         this.groupName = groupName;
         mainCache = new LRUCache();
         hotCache = new LRUCache();
@@ -44,7 +44,7 @@ public class Group implements SingleLoader{
      * @param key
      * @return
      */
-    public Result get(String key) {
+    protected Result get(String key) {
         LOG.info("正在获取key=({})对应的数据。", key);
         // 先检查本地缓存；
         Result result = lookupCache(key);

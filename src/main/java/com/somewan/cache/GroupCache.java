@@ -89,7 +89,7 @@ public class GroupCache {
             Group group = groups.get(namespace);
             if (group == null) {
                 LOG.warn("用户请求不存在的命名空间,namespace={}", namespace);
-                return Result.errorResult();
+                return Result.serverErrorResult();
             }
 
             Result result = group.get(key);
@@ -97,7 +97,7 @@ public class GroupCache {
             return result;
         } catch (Exception e) {
             LOG.error("获取数据出现异常，namespace={}, key={}", namespace, key, e);
-            return Result.errorResult();
+            return Result.serverErrorResult();
         }
     }
 }

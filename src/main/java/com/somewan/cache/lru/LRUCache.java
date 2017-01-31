@@ -85,7 +85,7 @@ public class LRUCache {
             return Result.successResult(obj);
         } catch (RuntimeException e){
             LOG.error("读取缓存失败。", e);
-            return Result.errorResult();
+            return Result.serverErrorResult();
         } finally {
             mapLock.readLock().unlock();
         }
