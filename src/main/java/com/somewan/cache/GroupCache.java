@@ -5,6 +5,7 @@ import com.somewan.cache.getter.LocalGetter;
 import com.somewan.cache.peer.ConsistentHashPeerPicker;
 import com.somewan.cache.peer.PeerPicker;
 import com.somewan.cache.result.Result;
+import com.somewan.cache.result.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -89,7 +90,7 @@ public class GroupCache {
             Group group = groups.get(namespace);
             if (group == null) {
                 LOG.warn("用户请求不存在的命名空间,namespace={}", namespace);
-                return Result.serverErrorResult();
+                return Result.errorResult(ResultCode.BAD_REQUEST);
             }
 
             Result result = group.get(key);

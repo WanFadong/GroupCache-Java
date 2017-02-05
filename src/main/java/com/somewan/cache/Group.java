@@ -124,17 +124,16 @@ public class Group implements SingleLoader{
 
     private Result getLocally( String key) {
         // 本地读取
-        String cacheName = groupCache.getCacheName();
         String namespace = groupName;
-        Result result = groupCache.getGetter().get(cacheName, namespace, key);
+        Result result = groupCache.getGetter().get(namespace, key);
 
         // 加载入mainCache
         boolean set = false;
         if(result.isSuccess()) {
             set = mainCache.add(key, result.getValue());
         }
-        LOG.info("从本地加载cacheName=({}),namespace=({}),key=({}),result={}。缓存设置结果=({})",
-                cacheName, namespace, key, JSON.toJSONString(result), set);
+        LOG.info("从本地加载namespace=({}),key=({}),result={}。缓存设置结果=({})",
+                namespace, key, JSON.toJSONString(result), set);
         return result;
     }
 

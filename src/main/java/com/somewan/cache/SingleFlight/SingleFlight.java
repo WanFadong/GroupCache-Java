@@ -1,6 +1,7 @@
 package com.somewan.cache.singleflight;
 
 import com.somewan.cache.result.Result;
+import com.somewan.cache.result.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +28,7 @@ public class SingleFlight {
     public Result singleDo(SingleLoader singleLoader, String key) {
         try {
             if (key == null) {
-                return null;//TODO NULL 以后考虑抛出异常
+                return Result.errorResult(ResultCode.BAD_REQUEST);
             }
 
             mapLock.lock();
@@ -78,7 +79,7 @@ public class SingleFlight {
             return result;
         } catch (Exception e) {
             LOG.error("获取key={}的缓存失败", key, e);
-            return null;//TODO NULL 返回异常
+            return Result.errorResult(ResultCode.SERVER_ERROR);
         }
 
     }

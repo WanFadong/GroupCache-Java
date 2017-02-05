@@ -53,21 +53,22 @@ public class HttpUtils {
             LOG.info("请求成功，url=({})，result={}", urlStr, JSON.toJSONString(result));
             return result;
         } catch (MalformedURLException e) {
-            LOG.error("请求失败，url=({})", e);
+            LOG.error("请求失败2017年02月03日16:32:26，url=({})", urlStr, e);
             return Result.errorResult(ResultCode.BAD_REQUEST);
         } catch (IOException e) {
-            LOG.error("请求失败，url=({})", e);
+            LOG.error("请求失败，url=({})", urlStr, e);
             return Result.errorResult(ResultCode.NET_ERROR);
         } finally {
             if(reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-
                     return Result.errorResult(ResultCode.NET_ERROR);// 这里会被返回吗？
                 }
             }
-            connection.disconnect();
+            if(connection != null) {
+                connection.disconnect();
+            }
         }
 
     }

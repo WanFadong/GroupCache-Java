@@ -10,13 +10,14 @@ import java.util.Map;
  */
 public class LocalGetterDemo implements LocalGetter {
     @Override
-    public Result get(String cacheName, String nameSpace, String key) {
+    public Result get(String nameSpace, String key) {
         Map<String, Object> wanMap = new HashMap<String, Object>();
         wanMap.put("name", "wanfadong");
         wanMap.put("age", "25");
         wanMap.put("gender", "man");
         Map<String, Object> caiMap = new HashMap<String, Object>();
         caiMap.put("age", "24");
+
         Object value;
         if(nameSpace.compareTo("wan") == 0) {
             value = wanMap.get(key);

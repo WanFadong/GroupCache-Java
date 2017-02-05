@@ -24,7 +24,7 @@ public class Peer {
      */
     public Result get(String cacheName, String groupName, String key) {
         // RESTful风格的请求。
-        String url = host +"/" + cacheName + "/" + groupName;
+        String url = "http://" + host +"/" + cacheName + "/" + groupName + "/" + key;
         Result result = HttpUtils.get(url);
         //TODO 某些错误的类型，可以尝试重试
         return result;
